@@ -156,6 +156,15 @@ There are two controllers, PatientsController is used for registering patients (
 ConsultationsController is used to get all the scheduled consultations (GET)
 
 
+## Consultation Scheduling Logic ##
+
+The logic for scheduling consultation on the next available day is implemented in "ConsultationScheduler" class.
+In order to schedule a consultation on the next available day, first the maximum possbile consulations per day is calculated. Since every consulation requires a doctor and a Treatment Room, the maximum number of possible consulation would be the lesser count of number of Doctors and number of Treatment Rooms.
+For every future day, get the count for scheduled consulations and if it's less than the maximum possbile consulations, then the patient condition is checked. If patient condition is "Flu" then a check is done to find any available GeneralPractitioner for that day and also a Treatment Room. For Flu patients, first check would be to find any available Treatment Room that doesn't have a Treatment Machine. Otherwise a check is done for Treatment Rooms with Treatment Machine.
+If the patient condition is "Cancer", the search for available Doctors with "Oncology" role. Depending on the Topology, search for available Treatment Rooms that have Treatment Machine that matches the patient's Topology.
+If found, the consultation will be scheduled. If not found, go advance the day and perform the check again.
+
+
 ## Unit Tests ##
 
 There are two unit test implemented to test Patients controller as well as Consultations controller
